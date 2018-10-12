@@ -27,8 +27,9 @@
 			</tr>
 		</c:forEach>
 	</table>
+	<br><br>
 	<c:if test="${flag!=false}">
-		<center><button type="button" style="align-content:center; width: 150px; height: 30px; left: 50%;" id="showMore" onclick="showmore()">더보기</button></center>
+		<center><a style=" text-decoration: none;align-content:center; width: 150px; height: 30px; left: 50%; font-size:20px; font-weight: bold;" id="showMore" onclick="showmore()">더보기</button></center>
 	</c:if>
 	<div id="distinguish" style="display: none">${param.tag}</div>
 	<div id="listSize" style="display: none">${listSize}</div>

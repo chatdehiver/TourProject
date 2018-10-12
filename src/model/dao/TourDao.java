@@ -9,11 +9,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import config.OracleInfo;
-import controller.CheckReviewController;
 import model.vo.AttractionVO;
 import model.vo.CommentVO;
 import model.vo.FestivalVO;
-
 import model.vo.MemberVO;
 import model.vo.ReviewVO;
 import query.review.ReviewStringQuery;
@@ -109,7 +107,7 @@ public class TourDao {
 		return num;
 	}
 	
-	public ArrayList<ReviewVO> getRecentReviews(int pn) throws SQLException{		//index review list
+	public ArrayList<ReviewVO> getRecentReviews(int pn) throws SQLException { // index review list
 		Connection conn = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -128,7 +126,6 @@ public class TourDao {
 		}
 		return rlist;
 	}
-
 	/*
 	 * public ArrayList<ReviewVO> getBestReviews(String tag) throws SQLException {
 	 * //index�뿉 移댄뀒怨좊━(tag)蹂� review Connection conn = null; PreparedStatement ps =
@@ -145,7 +142,7 @@ public class TourDao {
 	 * ps, conn); } return rlist; }
 	 */
 
-	public void addLike(int reviewNum) {
+	public void addLike(int reviewNum) throws SQLException{
 		/*
 		 * �씠 硫붿꽌�뱶媛� �샇異쒕릺硫� 湲�踰덊샇 post_num�씤 由щ럭�쓽 like �닔媛� 1 利앷��븳�떎.
 		 */
@@ -163,7 +160,8 @@ public class TourDao {
 			if (rs.next()) {
 				System.out.println("reviewNum�쓽 like媛� 1 利앷�! :: " + rs.getInt("likes"));
 			}
-		} catch (Exception e) {
+		} finally {
+			closeAll(rs, ps, conn);
 		}
 	}// addLike �����
 
@@ -260,9 +258,9 @@ public class TourDao {
 			while (rs.next()) {
 				list.add(new FestivalVO(rs.getString("festival_Name"), rs.getString("festival_Location"),
 						rs.getString("location"), rs.getString("city"), rs.getString("start_Date"),
-						rs.getString("END_DATE"), rs.getString("agency"), rs.getString("img")));
+						rs.getString("end_Date"), rs.getString("agency"), rs.getString("img")));
 			}
-		} finally {
+		}finally {
 			closeAll(rs, ps, conn);
 		}
 		return list;
@@ -284,7 +282,7 @@ public class TourDao {
 						rs.getString("city"), rs.getString("info")));
 			}
 			for (AttractionVO vo : list) {
-				ps = conn.prepareStatement("SELECT spot_image FROM spot_image WHERE spot_name=?");
+				ps = conn.prepareStatement("SELECT spot_name, spot_image FROM spot_image WHERE spot_name=?");
 				ps.setString(1, vo.getSpotName());
 				rs = ps.executeQuery();
 				if (rs.next())

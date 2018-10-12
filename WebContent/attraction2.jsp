@@ -137,11 +137,17 @@ tr td {
 box-sizing
 
 
+
+
 :
+
 
  
 
+
 border-box
+
+
 
 
 ;
@@ -215,8 +221,8 @@ body {
 			type : "get",
 			url : "getBestReviewCityBytag.do",
 			data : {
-/* 				"cblist" : "${cblist}",
- */				"tag" : "맛집",
+				/* 				"cblist" : "${cblist}",
+				 */"tag" : "맛집",
 				"pageNo" : count,
 				"size" : $('#listSize').html()
 			//더보기 누르기 전의 갯수.
@@ -257,7 +263,7 @@ body {
 		$('nav a').click(function() {
 			var str = $(this).html();
 			var loca = {
-	//			"cblist" : "${cblist}",
+				//			"cblist" : "${cblist}",
 				"tag" : str
 			};
 
@@ -420,13 +426,14 @@ body {
 				</div>
 				<div class="grid">
 					<div class="grid-sizer"></div>
+					<c:forEach var="avo" items="${avo}">
+						<div class="grid-item">
+							<a href="#"> <img src="${avo.mainImages}">
+							</a>
+						</div>
+					</c:forEach>
 
-					<div class="grid-item">
-						<a href=#> <img
-							src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/82/orange-tree.jpg" />
-						</a>
-					</div>
-
+<!-- 
 					<div class="grid-item">
 						<a href=#> <img
 							src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/82/submerged.jpg" />
@@ -477,7 +484,7 @@ body {
 						<a href=#> <img
 							src="https://static1.squarespace.com/static/554b5e7ce4b0149371f10a93/59775c56f9a61e6bb7e5db1f/59775cfdd482e9a886609de9/1502706746778/clienia+premium.jpg?format=500w" />
 						</a>
-					</div>
+					</div> -->
 				</div>
 
 			</div>

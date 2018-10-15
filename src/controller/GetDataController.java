@@ -11,57 +11,113 @@ import model.vo.AttractionVO;
 
 public class GetDataController implements Controller{
 
-	@Override
-	public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		String pageNo = request.getParameter("pageNo");	
-		if(pageNo == null) pageNo="1";
-		String tag = request.getParameter("search");
-		
-		ArrayList<AttractionVO> alist = TourDao.getInstance().getData(tag);
-		boolean emptyFlag = false;
-		boolean flag = false;
-		String path = "relatedreview.do";
-		if(!alist.isEmpty()) 
-			emptyFlag = true;
-		
-		else {
-			/*boolean tagExist = TourDao.getInstance().tagExist(tag);
-			if(tagExist) {
-				String check = TourDao.getInstance().checkTag(tag);
-				if(check.equals("location"))
-					path = "index.jsp"; // ë‚˜ì¤‘ì— location(v1) í˜ì´ì§€ë¡œ ì´ë™
-					
-				else if(check.equals("city")) 
-					path = "index.jsp"; // ë‚˜ì¤‘ì— city(v2) í˜ì´ì§€ë¡œ ì´ë™
-			}
-			else {
-				alist = TourDao.getInstance().checkSpot(tag);
-				flag = true;
-			}*/
-			
-			String check = TourDao.getInstance().checkTag(tag);
-			if(check.equals("location"))
-				path = "locationpage.do?location=path-"+tag; // ë‚˜ì¤‘ì— location(v1) í˜ì´ì§€ë¡œ ì´ë™
-				
-			else if(check.equals("city")) 
-				path = "getAttraction.do?city="+tag; // ë‚˜ì¤‘ì— city(v2) í˜ì´ì§€ë¡œ ì´ë™
-			
-			else {
-				boolean tagExist = TourDao.getInstance().tagExist(tag);
-				if(!tagExist) {
-					alist = TourDao.getInstance().checkSpot(tag);
-					flag = true;
-					if(alist.isEmpty()) {
-						path = "noResult.jsp";
-					}
-				}
-			}
-		}
-		
-		request.setAttribute("alist", alist);
-		request.setAttribute("emptyFlag", emptyFlag);
-		
-		return new ModelAndView(path + "?pageNo="+pageNo+"&&tag="+tag+"&&flag="+flag);
-	}
-}
+   @Override
+   public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
+      String pageNo = request.getParameter("pageNo");   
+      if(pageNo == null) pageNo="1";
+      String tag = request.getParameter("search");
+      ArrayList<AttractionVO> alist = null;
+      boolean emptyFlag = false;
+      boolean flag = false;
 
+      String path = "relatedreview.do";
+      
+      alist = TourDao.getInstance().getData(tag);
+      System.out.println(alist+"ÀÌ°Ç ¤²¾î¶ó");
+      if(!alist.isEmpty()) 
+         emptyFlag = true;
+      
+      else {
+         /*boolean tagExist = TourDao.getInstance().tagExist(tag);
+         if(tagExist) {
+            String check = TourDao.getInstance().checkTag(tag);
+            if(check.equals("location"))
+               path = "index.jsp"; // ³ªÁß¿¡ location(v1) ÆäÀÌÁö·Î ÀÌµ¿
+               
+            else if(check.equals("city")) 
+               path = "index.jsp"; // ³ªÁß¿¡ city(v2) ÆäÀÌÁö·Î ÀÌµ¿
+         }
+         else {
+            alist = TourDao.getInstance().checkSpot(tag);
+            flag = true;
+         }*/
+         
+         String check = TourDao.getInstance().checkTag(tag);
+         System.out.println(check+"check È®ÀÎ");
+         if(check.equals("location")) {            //°Ë»ö¾î°¡ location ÀÌ¸§ÀÌ¸é
+            path = "locationpage.do?location=path-"+tag; // ³ªÁß¿¡ location(v1) ÆäÀÌÁö·Î ÀÌµ¿
+            return new ModelAndView(path);
+         }
+            
+         else if(check.equals("city")) {            //°Ë»ö¾î°¡ city ÀÌ¸§ÀÌ¸é
+            ArrayList<String> locationList = TourDao.getInstance().checkLocationByCity(tag);
+            if(locationList.size()!=1) {
+               request.setAttribute("locationList", locationList);
+               request.setAttribute("city", tag);
+               path = "searchLocationByCity.jsp"; // ³ªÁß¿¡ city(v2) ÆäÀÌÁö·Î ÀÌµ¿
+               return new ModelAndView(path);
+            } else {
+               path = "getAttraction.do?city="+tag+"&&location="+locationList.get(0);
+               return new ModelAndView(path);
+            }
+            
+         }
+         
+         else {                              //°Ë»ö¾î°¡ µÑ´Ù ¾Æ´Ï¸é
+            boolean tagExist = TourDao.getInstance().tagExist(tag);
+            System.out.println("tagExist : "+tagExist);
+            if(!tagExist) {                     //°Ë»ö¾î°¡ ¸®ºätag¿¡ ¾ø¾î
+               alist = TourDao.getInstance().checkSpot(tag);
+               flag = true;
+               System.out.println(alist+" tagExist ¾È¿¡ alist");
+               if(alist.isEmpty()) {            //°Ë»ö¾î°¡ °ü±¤Áö¿¡µµ ¾ø¾î
+                  if(tag.indexOf(" ") == -1) {   //¶ç¾î¾²±â ¾ø¾î
+                     path ="noResult.jsp"; 
+                     System.out.println("È÷È÷È÷È÷È÷È÷");
+                  }
+                  
+                  else {                     //¶ç¾î¾²±â ÀÖ¾î
+                     String[] arr = tag.trim().split(" ");
+                     String strL = arr[arr.length-2];         //±× ¾Õ¿¡²¨
+                     String strC = arr[arr.length-1];         //Á¦ÀÏµÚ¿¡²¨
+                     String checkC = TourDao.getInstance().checkTag(strC);
+                     boolean cflag = false;
+                     System.out.println(checkC+"   checkC¸¦ È®ÀÎÇØº¸ÀÚ    strL : "+strL+"     strC"+strC);
+                     
+                     if(checkC.equals("city")) {
+                        ArrayList<String> locationList = TourDao.getInstance().checkLocationByCity(strC);
+                        if(locationList.size()!=1) {
+                           for(int i = 0; i < locationList.size(); i++) {
+                              if(locationList.get(i) == strL) {
+                                 path = "getAttraction.do?location="+strL+"&&city="+strC;
+                                 cflag = true;
+                              }
+                           }
+                           if(!cflag)
+                              path ="noResult.jsp";
+                              
+                        }
+                        path = "getAttraction.do?location="+strL+"&&city="+strC;
+                        
+                        return new ModelAndView(path);
+                        
+                     }//if
+                     else {
+                        alist = TourDao.getInstance().checkSpot(strC);
+                     }
+                  }//else
+               }//if alist.empty
+               
+               else {                        //°Ë»ö¾î°¡ °ü±¤Áö¿¡ ÀÖ¾î
+                  System.out.println(alist+"!@#");
+               }//else !alist.empty
+            }//tagExist
+         }
+      }
+      
+      request.setAttribute("alist", alist);
+      request.setAttribute("emptyFlag", emptyFlag);
+      
+      return new ModelAndView(path + "?pageNo="+pageNo+"&&tag="+tag+"&&flag="+flag);
+   }
+}

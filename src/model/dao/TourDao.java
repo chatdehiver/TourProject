@@ -37,6 +37,25 @@ public class TourDao {
 
 	}
 
+	public ArrayList<String> checkLocationByCity(String city) throws SQLException {
+		ArrayList<String> list = new ArrayList<String>();
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		try {
+			conn = getConnect();
+			ps = conn.prepareStatement(ReviewStringQuery.CHECK_TAG_BY_CITY);
+			ps.setString(1, city);
+			rs = ps.executeQuery();
+			while (rs.next()) {
+				list.add(rs.getString("location"));
+			}
+		} finally {
+			closeAll(rs, ps, conn);
+		}
+		return list;
+	}
+
 	public int writeReview(ReviewVO rvo) throws SQLException {
 		Connection conn = null;
 		PreparedStatement ps = null;
@@ -106,7 +125,7 @@ public class TourDao {
 		}
 		return num;
 	}
-	
+
 	public ArrayList<ReviewVO> getRecentReviews(int pn) throws SQLException { // index review list
 		Connection conn = null;
 		PreparedStatement ps = null;
@@ -142,7 +161,7 @@ public class TourDao {
 	 * ps, conn); } return rlist; }
 	 */
 
-	public void addLike(int reviewNum) throws SQLException{
+	public void addLike(int reviewNum) throws SQLException {
 		/*
 		 * �씠 硫붿꽌�뱶媛� �샇異쒕릺硫� 湲�踰덊샇 post_num�씤 由щ럭�쓽 like �닔媛� 1 利앷��븳�떎.
 		 */
@@ -204,7 +223,8 @@ public class TourDao {
 		return list;
 	}// getBestReview
 
-	public ArrayList<ReviewVO> getBestReviewByTagCity(String location, String city, String tag, int pageNO) throws SQLException { // v1
+	public ArrayList<ReviewVO> getBestReviewByTagCity(String location, String city, String tag, int pageNO)
+			throws SQLException { // v1
 		// review
 		// list
 		Connection conn = null;
@@ -234,7 +254,7 @@ public class TourDao {
 				list.get(i).setTags(tags);
 				ArrayList<String> img = getImages(list.get(i).getReviewNum(), conn);
 				list.get(i).setImages(img);
-				if(img.size()!=0)
+				if (img.size() != 0)
 					list.get(i).setMainImage(img.get(0));
 			} // for
 		} finally {
@@ -260,7 +280,7 @@ public class TourDao {
 						rs.getString("location"), rs.getString("city"), rs.getString("start_Date"),
 						rs.getString("end_Date"), rs.getString("agency"), rs.getString("img")));
 			}
-		}finally {
+		} finally {
 			closeAll(rs, ps, conn);
 		}
 		return list;
@@ -582,6 +602,7 @@ public class TourDao {
 		} finally {
 			closeAll(rs, ps, conn);
 		}
+		System.out.println("DAO에서 찍어보는 list" + list);
 		return list;
 	}
 
@@ -685,11 +706,11 @@ public class TourDao {
 
 			while (rs.next())
 				list.add(new AttractionVO(rs.getString("spot_name"), rs.getString("address"), rs.getString("location"),
-						rs.getString("city"), rs.getString("info"), rs.getString("img")));
-
+						rs.getString("city"), rs.getString("info")));
 		} finally {
 			closeAll(rs, ps, conn);
 		}
+		System.out.println(list);
 		return list;
 	}
 
@@ -919,18 +940,21 @@ public class TourDao {
 		}
 		return vo;
 	}
-	public void deleteImage(String img) throws SQLException{
-		System.out.println("img url : "+img);
-		File file = new File("C:\\yjk\\webPro2\\eclipse\\workspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps"+img);
-		System.out.println(file.delete()); 
+
+	public void deleteImage(String img) throws SQLException {
+		System.out.println("img url : " + img);
+		File file = new File(
+				"C:\\yjk\\webPro2\\eclipse\\workspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps"
+						+ img);
+		System.out.println(file.delete());
 	}
-	
-	public MemberVO findIdPass(String userName, int ssn, String tel) throws SQLException{
+
+	public MemberVO findIdPass(String userName, int ssn, String tel) throws SQLException {
 		MemberVO vo = null;
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		
+
 		try {
 			conn = getConnect();
 			pstmt = conn.prepareStatement(UserStringQuery.FINDIDPASS_USER);
@@ -938,21 +962,22 @@ public class TourDao {
 			pstmt.setInt(2, ssn);
 			pstmt.setString(3, tel);
 			rs = pstmt.executeQuery();
-				if(rs.next()) {
-				vo = new MemberVO(rs.getString(1),rs.getString(2));
-				}
-		}finally {
-			closeAll(pstmt,conn);
+			if (rs.next()) {
+				vo = new MemberVO(rs.getString(1), rs.getString(2));
+			}
+		} finally {
+			closeAll(pstmt, conn);
 		}
 		return vo;
 	}
-	
 
 	public static void main(String[] args) throws SQLException { // 단위테스트
-		
-		/*ReviewVO vo = TourDao.getInstance().checkReview(36);
-		System.out.println(vo.getImages());
-		TourDao.getInstance().deleteImage(vo.getImages().get(0));*/
+
+		/*
+		 * ReviewVO vo = TourDao.getInstance().checkReview(36);
+		 * System.out.println(vo.getImages());
+		 * TourDao.getInstance().deleteImage(vo.getImages().get(0));
+		 */
 		/*
 		 * ArrayList<ReviewVO> vo = new ArrayList<ReviewVO>(); vo =
 		 * TourDao.getInstance().getScrapList("yun"); for(ReviewVO r : vo) {

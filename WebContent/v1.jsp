@@ -7,6 +7,12 @@
 <head>
 <meta charset="utf-8">
 <title>Insert title here</title>
+<link href="https://fonts.googleapis.com/css?family=Stylish"
+	rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Gugi"
+	rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Do+Hyeon"
+	rel="stylesheet">
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <link rel="stylesheet" href="css/style.css">
@@ -24,6 +30,14 @@
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 <style>
+#cityTitle {
+	font-family: 'Do Hyeon', sans-serif;
+}
+
+#locaTitle {
+	font-family: 'Gugi', cursive;
+}
+
 #carousel_con {
 	width: 600px;
 	height: 350px;
@@ -133,6 +147,7 @@ tr td {
 
 .text {
 	color: #FF0D86;
+	opacity : 1;
 	font-size: 20px;
 	position: absolute;
 	top: 50%;
@@ -141,7 +156,7 @@ tr td {
 	-ms-transform: translate(-50%, -50%);
 	transform: translate(-50%, -50%);
 	white-space: nowrap;
-	filter: Alpha(opacity = 100);
+	filter: Alpha(opacity = 1);
 }
 
 .image {
@@ -150,13 +165,13 @@ tr td {
 	height: auto;
 }
 
-.overlay {
+.overlay { /* festival */
 	position: absolute;
 	bottom: 0;
 	left: 100%;
 	right: 0;
-	background-color: gray;
-	opacity: 0.4;
+	background-color: white;
+	opacity: 0.8;
 	overflow: hidden;
 	width: 0;
 	height: 100%;
@@ -178,12 +193,6 @@ tr td {
 	-ms-transform: translate(-50%, -50%);
 	transform: translate(-50%, -50%);
 	white-space: nowrap;
-}
-
-.image {
-	display: block;
-	width: 100%;
-	height: auto;
 }
 </style>
 
@@ -359,8 +368,8 @@ tr td {
 
 			<article style="height: auto">
 				<p>
-				<p align="center"
-					style="margin-bottom: 30px; color: #FFFFFF; font-weight: bold; font-size: 45px;">${requestScope.location}</p>
+				<p align="center" id="locaTitle"
+					style="margin-bottom: 30px; color: #FFFFFF; font-size: 60px;">${requestScope.location}</p>
 				<div class="container" id="carousel_con">
 					<div id="myCarousel" class="carousel slide" data-ride="carousel">
 
@@ -372,7 +381,7 @@ tr td {
 										<img src="${festivalVO.img}"
 											style="width: 600px; height: 350px;" class="image">
 										<div class="overlay">
-											<div class="text">${festivalVO.location}<br>${festivalVO.city}<br>${festivalVO.festivalName}<br>${festivalVO.startDate}부터<br>${festivalVO.endDate}까지</div>
+											<div id="cityTitle" class="text"><font size="20px">${festivalVO.location} &nbsp;${festivalVO.city}<br>${festivalVO.festivalName}<br>${festivalVO.startDate}부터<br>${festivalVO.endDate}까지</font></div>
 										</div>
 									</div>
 								</c:if>
@@ -397,13 +406,13 @@ tr td {
 
 					<div align="center" class="col-sm-2">
 						<hr>
-						<br> <a
-							style="font-size: 25px; color: #FFFFFF /* rgb(116, 191, 237) */; text-decoration: none; font-weight: bold;"
+						<br> <a id="cityTitle"
+							style="font-size: 35px; color: #FFFFFF /* rgb(116, 191, 237) */; text-decoration: none;"
 							href="getAttraction.do?city=${rList}&&location=${requestScope.location}">${rList}</a><br>
 						<br>
 					</div>
 				</c:forEach>
-				<hr>
+				<!-- <hr> -->
 				<br> <br>
 			</article>
 		</section>

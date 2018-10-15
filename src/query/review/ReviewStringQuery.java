@@ -69,9 +69,9 @@ public interface ReviewStringQuery {
 			+ " (select review_num, ceil(rownum/" + CommonConstants.CONTENT_NUMBER_PER_PAGE + ") page from"
 			+ " (select review_num from tag where word=? order by review_num desc)) where page=?))";
 
-	String GET_DATA = "select * from tourspot where spot_name =" + "(select distinct word from tag where word=?)";
+	String GET_DATA = "select * from tourspot where spot_name =(select distinct word from tag where word=?)";
 
-	String CHECK_SPOT = "select * from tourspot where spot_name=?";
+	String CHECK_SPOT = "select * from tourspot where spot_name like ?";
 
 	String GET_RECENT_REVIEWS = "SELECT * FROM" 				//index.jsp
 			+ "(SELECT review_num, title, location, city,id, ceil(rownum/10) page"

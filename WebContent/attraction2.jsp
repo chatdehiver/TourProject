@@ -432,59 +432,6 @@ body {
 							</a>
 						</div>
 					</c:forEach>
-
-<!-- 
-					<div class="grid-item">
-						<a href=#> <img
-							src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/82/submerged.jpg" />
-						</a>
-					</div>
-					<div class="grid-item">
-						<a href=#> <img
-							src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/82/look-out.jpg" />
-						</a>
-					</div>
-					<div class="grid-item">
-						<a href=#> <img
-							src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/82/one-world-trade.jpg" />
-						</a>
-					</div>
-					<div class="grid-item">
-						<a href=#> <img
-							src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/82/drizzle.jpg" />
-						</a>
-					</div>
-					<div class="grid-item">
-						<a href=#> <img
-							src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/82/cat-nose.jpg" />
-						</a>
-					</div>
-					<div class="grid-item">
-						<a href=#> <img
-							src="https://static1.squarespace.com/static/554b5e7ce4b0149371f10a93/59775c56f9a61e6bb7e5db1f/59775cacd1758e6e542b9ff5/1502706803981/performance.jpg?format=500w" />
-						</a>
-					</div>
-					<div class="grid-item">
-						<a href=#> <img
-							src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/82/contrail.jpg" />
-						</a>
-					</div>
-					<div class="grid-item">
-						<a href=#> <img
-							src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/82/golden-hour.jpg" />
-						</a>
-					</div>
-					<div class="grid-item">
-						<a href=#> <img
-							src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/82/flight-formation.jpg" />
-						</a>
-					</div>
-
-					<div class="grid-item">
-						<a href=#> <img
-							src="https://static1.squarespace.com/static/554b5e7ce4b0149371f10a93/59775c56f9a61e6bb7e5db1f/59775cfdd482e9a886609de9/1502706746778/clienia+premium.jpg?format=500w" />
-						</a>
-					</div> -->
 				</div>
 
 			</div>

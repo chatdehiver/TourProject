@@ -7,6 +7,12 @@
 <head>
 <meta charset="utf-8">
 <title>Insert title here</title>
+<link href="https://fonts.googleapis.com/css?family=Stylish"
+	rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Gugi"
+	rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Do+Hyeon"
+	rel="stylesheet">
 <link rel="stylesheet"
 	href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <link rel="stylesheet" href="/resources/demos/style.css">
@@ -20,14 +26,23 @@
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
 <script type="text/javascript">
-	/* 	$(function() {
-	 $('#imgtag').click(function(){
-	 alert('${avo}');
-	 });//hover
-	 });//ready */
+	$(function() {
+		$('div[name=tourSpot1]').hover(function() {
+			$(this).addClass('overlay');
+		});//hover
+	});//ready
 </script>
 <style>
+#cityTitle {
+	font-family: 'Do Hyeon', sans-serif;
+}
+
+#locaTitle {
+	font-family: 'Gugi', cursive;
+}
+
 section {
 	height: auto;
 }
@@ -66,10 +81,10 @@ body {
 }
 
 article {
-	float: left;
+	float:left;
 	padding: 20px;
-	width: 70%;
-	height: auto; /* only for demonstration, should be removed */
+	width : 75%;
+	height: auto;
 }
 
 /* Clear floats after the columns */
@@ -90,18 +105,6 @@ tr td {
 	font-size: 30px;
 }
 
-. /* overlay {
-	position: absolute;
-	bottom: 0;
-	left: 100%;
-	right: 0;
-	background-color: gray;
-	opacity: 0.4;
-	overflow: hidden;
-	width: 0;
-	height: 100%;
-	transition: .5s ease;
-} */
 overlay {
 	position: absolute;
 	top: 0;
@@ -110,21 +113,23 @@ overlay {
 	right: 0;
 	height: 100%;
 	width: 100%;
-	opacity: 0;
+	opacity: 1;
 	transition: .5s ease;
+	color: whtie;
 	background-color: #008CBA;
 }
 
 /* .container:hover .overlay {
 	width: 100%;
 	left: 0;
-} */
+}
+ */
 .container:hover .overlay {
-	opacity:1;
+	opacity: 1;
 }
 
-/* .text {
-	color: white;
+.text {
+	color: black;
 	font-size: 20px;
 	position: absolute;
 	top: 50%;
@@ -133,7 +138,9 @@ overlay {
 	-ms-transform: translate(-50%, -50%);
 	transform: translate(-50%, -50%);
 	white-space: nowrap;
-} */
+	opacity: 0;
+}
+
 .text {
 	color: white;
 	font-size: 20px;
@@ -198,8 +205,8 @@ body {
 }
 
 #img {
-	width: 250px;
-	height: 182px;
+	width: 300px;
+	height: 200px;
 }
 
 .hashtag:before {
@@ -354,9 +361,9 @@ body {
 									<c:otherwise>
 										<ul class="dropdown-menu">
 											<li><a href="login.jsp"><span
-													class="glyphicon glyphicon-log-in"></span>&nbsp;&nbsp;濡�洹몄��</a></li>
+													class="glyphicon glyphicon-log-in"></span>&nbsp;&nbsp;로그인</a></li>
 											<li><a href="register.jsp"><i
-													class="fas fa-user-plus"></i>&nbsp;&nbsp;����媛���</a></li>
+													class="fas fa-user-plus"></i>&nbsp;&nbsp;회원가입</a></li>
 										</ul>
 									</c:otherwise>
 								</c:choose></li>
@@ -390,10 +397,10 @@ body {
 
 			<article>
 				<%--    <c:set var="cblist" value="${cblist.list}"/>  --%>
-				<div style="margin-left: 20%">
+				<div style="margin-left: 5%">
 
 					<!-- 	<div class="w3-container w3-dark-grey"> -->
-					<p style="color: #FFFFFF; font-weight: bold; font-size: 45px;"
+					<p id="locaTitle" ; style="color: #FFFFFF; font-size: 50px;"
 						class="main">${avo[0].location}&nbsp;&nbsp;${avo[0].city}</p>
 					<!-- 	</div> -->
 					<div class="grid">
@@ -402,16 +409,15 @@ body {
 						<c:forEach var="avo" items="${avo}">
 							<c:if test="${avo.mainImage ne null}">
 								<div class="grid-item container">
-									<a href="#"> <img class="image" id="imgtag"
+									<a href="getdata.do?search=${avo.spotName}"> <img class="image" id="imgtag"
 										src="${avo.mainImage}">
 										<div class="overlay">
-											<div class="text" id="tourSpot">${avo.spotName}</div>
+											<div id="cityTitle" class="text" name="tourSpot1">${avo.spotName}</div>
 										</div>
 									</a>
 								</div>
 							</c:if>
 						</c:forEach>
-
 					</div>
 				</div>
 			</article>
